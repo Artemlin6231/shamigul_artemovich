@@ -10,7 +10,7 @@ from Bio import pairwise2
 
 def on_start(update, context):
 	chat = update.effective_chat
-	context.bot.send_message(chat_id=chat.id, text="Привет")
+	context.bot.send_message(chat_id=chat.id, text="Привет, я люблю анимэ, а ты любишь? Введи год и я узнаю насколько ты любишь анимэ")
 
 
 def on_message(update, context):
@@ -145,6 +145,8 @@ def on_message(update, context):
     context.bot.send_message(chat_id=chat.id, text=MissMatch)
     context.bot.send_message(chat_id=chat.id, text=Z)
     context.bot.sendPhoto(chat_id=chat.id,photo=open('dicpic.png','rb'))
+    context.bot.send_message(chat_id=chat.id, text="Анимэ топ")
+
 
 updater = Updater(TOKEN, use_context=True)
 
