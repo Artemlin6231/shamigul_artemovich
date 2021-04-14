@@ -117,8 +117,8 @@ def on_message(update, context):
     f.close()
     gen_number = mas.index('GEN') + 1
     GEN = mas[gen_number].upper()
-    read1_number = mas.index('READ1') + 1
-    read2_number = mas.index('READ2') + 1
+    read1_number = mas.index('>READ1') + 1
+    read2_number = mas.index('>READ2') + 1
     READ1 = mas[read1_number].upper()
     READ2 = mas[read2_number].upper()
     GL = len(GEN)
