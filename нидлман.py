@@ -1,37 +1,36 @@
-
-def f(x, y, i, j):
+def s(x, y, i, j):
     if x[i] != y[j]:
-        return 1
+        return MISSMATCH
     else:
-        return 0
+        return MATCH
 
 def way( TABLE, m, n):
     if m == 0 and n == 0:
         return
     if n != 0:
-        insert = TABLE[m][n - 1] + 1
+        insert = TABLE[m][n - 1] + GAP
     else:
-        insert = 10**9
+        insert = -10**9
     if m != 0 and n != 0:
-        align = TABLE[m - 1][n - 1] + f(x, y, m - 1, n - 1)
+        align = TABLE[m - 1][n - 1] + s(x, y, m - 1, n - 1)
     else:
-        align = 10**9
+        align = -10**9
     if m != 0:
-        delete = TABLE[m - 1][n] + 1
+        delete = TABLE[m - 1][n] + GAP
     else:
-        delete = 10**9
+        delete = -10**9
 
-    choosen = min(insert, align, delete)
+    choosen = max(insert, align, delete)
 
     if choosen == insert:
-        alignment_sequence2.append(str(y[n - 1]))
-        alignment_sequence1.append('_')
+        sequence2.append(str(y[n - 1]))
+        sequence1.append('_')
         palki.append(' ')
         return way(TABLE, m, n - 1)
 
     elif choosen == align:
-        alignment_sequence2.append(str(y[n - 1]))
-        alignment_sequence1.append(str(x[m - 1]))
+        sequence2.append(str(y[n - 1]))
+        sequence1.append(str(x[m - 1]))
         if str(y[n - 1])==str(x[m - 1]):
             palki.append('|')
         else:
@@ -39,9 +38,9 @@ def way( TABLE, m, n):
 
         return way(TABLE, m - 1, n - 1)
 
-    elif choosen== delete:
-        alignment_sequence2.append("_")
-        alignment_sequence1.append(str(x[m - 1]))
+    elif choosen == delete:
+        sequence2.append("_")
+        sequence1.append(str(x[m - 1]))
         palki.append(' ')
 
         return way(TABLE, m - 1, n)
@@ -52,18 +51,18 @@ def alignment(x,y):
     TABLE = [[0 for r in range(n + 1)] for jy in range(m + 1)]
 
     for i in range(1, m+1):
-        TABLE[i][0] = i
+        TABLE[i][0] = i*GAP
     for j in range(1,n + 1):
-        TABLE[0][j] = j
+        TABLE[0][j] = j*GAP
     for i in range(1, m+1):
         for j in range(1, n+1):
-            TABLE[i][j] = min(
-                TABLE[i - 1][j - 1] + f(x, y, i - 1, j - 1),
-                TABLE[i - 1][j] + 1,
-                TABLE[i][j - 1] + 1,
+            TABLE[i][j] = max(
+                TABLE[i - 1][j - 1] + s(x, y, i - 1, j - 1),
+                TABLE[i - 1][j] + GAP,
+                TABLE[i][j - 1] + GAP,
             )
     way(TABLE, m, n)
-    return (TABLE[m][n],alignment_sequence1[::-1],alignment_sequence2[::-1],palki[::-1])
+    return (sequence1[::-1],sequence2[::-1],palki[::-1])
 
 file = open('filename', 'r')
 x=0
@@ -82,13 +81,16 @@ file.close()
 alignment_sequence1 = []
 alignment_sequence2 = []
 palki=[]
-min_edit, steps,steps2,palki = alignment(x,y)
+MATCH = 1
+MISSMATCH = -1
+GAP = -2
+steps,steps2,palki = alignment(x,y)
 alignment_file = open('alignment.txt','w')
 
 alignment_file.write(''.join(steps)+'\n')
 alignment_file.write(''.join(palki)+'\n')
 alignment_file.write(''.join(steps2)+'\n')
-
+alignment_file.close()
 #print(''.join(steps))
 #print(''.join(palki))
 #print(''.join(steps2))
